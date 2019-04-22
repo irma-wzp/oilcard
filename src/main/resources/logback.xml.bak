@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- logback整合日志-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- 定义日志文件 输入位置 -->
+    <!--<property name="log_dir" value="${LOG_PATH}"/>-->
+    <!--<property name="log_dir" value="/opt/Log/prom_prize" />-->
+    <property name="log_dir" value="F:\usr\log" />
+    <!-- 日志最大的历史 30天 -->
+    <property name="maxHistory" value="30"/>
+
+    <!-- ConsoleAppender 控制台输出日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 对日志进行格式化 -->
+        <encoder>
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger -%msg%n</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出到mysql数据库的appender配置     -->
+    <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource
+                class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>com.mysql.jdbc.Driver</driverClass>
+            <url>jdbc:mysql://localhost:3306/oilcard?characterEncoding=utf8</url>
+            <user>root</user>
+            <password>root</password>
+        </connectionSource>
+    </appender>
+
+    <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
+    <!-- com.liyan为根包，也就是只要是发生在这个根包下面的所有日志操作行为的权限都是DEBUG -->
+    <!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE  -->
+    <logger name="com.lingc.oilcard" level="debug"/>
+    <!--<logger name="org.springframework" level="error"/>-->
+    <!--<logger name="org.apache.zookeeper" level="error"/>-->
+    <!--<logger name="com.netflix" level="error"/>-->
+    <root level="INFO">
+        <!--<appender-ref ref="db"/>-->
+        <!-- 控制台输出 -->
+        <appender-ref ref="STDOUT" />
+        <!--文件输出-->
+    </root>
+
+</configuration>
